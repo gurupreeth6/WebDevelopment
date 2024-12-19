@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text"></input>
+    <button onclick="addToDo()">AddToDo!</button>
+    <button onclick="deleteLastTodo()">Delete Last</button>
+    <button onclick="deleteFirstTodo()">Delete First</button>
+    <div id="todos"></div>
+    <script>
+        // Todos is a state
+        let todos = [];
+        let ctr = 1;
+        function addToDo() {
+            todos.push({
+                title: document.querySelector('input').value
+            })
+            render()
+        }
+
+        function deleteLastTodo(){
+            todos.splice(todos.length-1, 1);
+            render();
+        }
+
+        function deleteFirstTodo(){
+            todos.pop();
+            render();
+        }
+
+        function deleteToDo(index){
+            todos.splice(index, 1);
+            render();
+        }
+
+        // function deleteTodo(){
+        //     todos.splice(0, 1);
+        //     render();
+        // }
+
+        // Component
+        function createTodoComponent(todo, index) {
+            const spanEl = document.createElement('h1');
+            const buttonEl = document.createElement('button');
+            spanEl.innerHTML = todo.title;
+            buttonEl.innerHTML = 'Delete';
+            buttonEl.setAttribute('onclick', `deleteToDo(${index})`);
+            const newEl = document.createElement('div');
+            newEl.setAttribute('id', 'todo-'+ctr);
+            document.querySelector('div').appendChild(spanEl);
+            document.querySelector('div').appendChild(buttonEl);
+            document.querySelector('body').appendChild(newEl);
+            return newEl;
+        }
+
+        // Rendering
+        function render() {
+            document.querySelector('#todos').innerHTML = "";
+            for(let i =0 ; i< todos.length; i++) {
+                const ele = createTodoComponent(todos[i], i);
+                document.querySelector('#todos').appendChild(ele);
+                // ctr++;
+                // document.querySelector('input').value='';
+            }
+        } 
+    </script>
+</body>
+</html>
